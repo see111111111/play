@@ -1,0 +1,154 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    session:
+      persistent: true
+      timeout: PT15M
+spring:
+  application:
+    name: atta
+  datasource:
+    url: jdbc:mysql://localhost:3306/1111?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&allowMultiQueries=true&useAffectedRows=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123123
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 150MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  thymeleaf:
+    cache: false
+    prefix: file:./templates/
+  mail:
+    host: smtpout.secureserver.net
+    password: bazhuayu@2021
+    username: support@bazhuayu.io
+    nickname: 八爪娛
+    nicknameEN: BAZHUAYU 
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+            port: 465 #划重点
+          starttls:
+            enable: true
+            required: true
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+#logging:
+#  config: d:/dev/atta-bzy/config/logback.xml
+
+file:
+  upload:
+    path: /opt/file_upload
+    url-path: /upload/
+
+swagger2:
+  module:
+    base-package: com.xxx.atta.controller
+    title: ATTA API
+    description: ATTA API DOC
+    version: V1.0
+#web:
+#  location: classpath:web/
+shiro:
+  loginUrl: /admin/login.html
+  successUrl: /admin/index.html
+  sessionManager:
+    sessionIdUrlRewritingEnabled: false
+
+company:
+  block-chain:
+    account-address: "0x31b9103Fc04E8c5daC138502C37FF42DCD2387aa"
+    scan-url: https://api-testnet.bscscan.com/api?module=account&action=tokentx&address=${company.block-chain.account-address}&page=1&offset=300&sort=desc
+    scan-wallet-pay-url: https://api-testnet.bscscan.com/api?module=logs&action=getLogs&fromBlock=0&toBlock=latest&address=${company.block-chain.contract-address-wallet-pay}&topic0=${company.block-chain.topic0}&apikey=${company.block-chain.apiKey}
+    #钱包直接转账BUSD
+    goods-scan-url: https://api-testnet.bscscan.com/api?module=account&action=tokentx&contractaddress=${company.block-chain.contract-address}&address=${company.block-chain.goods-master-address}&startblock=11107343&page=1&offset=300&sort=desc
+    rpc-url: https://data-seed-prebsc-2-s3.binance.org:8545
+    #BUSD Token 地址
+    contract-address: "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56"
+    contract-address-wallet-pay: "0x5dE6ed56ED3Eba9769e3768F31966634386F18B1"
+    apiKey: "9GRF9Q9HT18PBCHQQD84N7U2MGC6I1NE27"
+    topic0: "0x89f5adc174562e07c9c9b1cae7109bbecb21cf9d1b2847e550042b8653c54a0e"
+    bscscan-tx-url: https://testnet.bscscan.com/tx/
+    #盲盒收款地址
+    blindbox-master-account: "0x4df679a3407e5ab8d547cb22b7f0c98994667558"
+    #投票券收款地址
+    goods-master-address: "0xC6F6fCce3026f08C668cA09bc5dFB58e596520f4"
+    #用户投注log
+    staking-log-url: https://api-testnet.bscscan.com/api?module=logs&action=getLogs&fromBlock=0&toBlock=latest&address=${company.block-chain.staking-contract}&topic0=0x5af417134f72a9d41143ace85b0a26dce6f550f894f2cbc1eeee8810603d91b6&apikey=${company.block-chain.apiKey}
+    staking-contract: "0x2033d36CB8b154a8551a53E04817F0Bbc190bc73"
+  forgot-password:
+    url: "http://127.0.0.1:${server.port}/password/email/reset"
+  checkout:
+    secret-key: "sk_test_1b2c0b76-e67b-4ddb-b423-aeed4c5c7c93"
+    public-key: "pk_test_7cabb2f1-609e-4581-918f-0f2c304989be"
+#    secret-key: "sk_31c3e484-dc11-4264-8283-74fd7a59830a"
+#    public-key: "pk_a154d2a3-6b40-4401-a12c-dba288e68957"
+    hook-domain: "http://47.118.74.48:8081"
+    success-url: "http://127.0.0.1:8081/checkout/succeed"
+    error-url: "http://127.0.0.1:8081/checkout/error"
+#    standbox: false
+  config:
+    www-force: false
+
+#pinata文件管理配置信息
+pinata:
+  api-key: "48e10c60a79f17a98721"
+  secret-api-key: "380db60d18fc46913a6abfe73a1228526e2ed03f3d7224da53dddb67d555b026"
+
+#区块链主网相关配置信息
+#币安网测试
+bsc:
+  casting:
+    token:
+      config:
+        node-url: "https://data-seed-prebsc-2-s3.binance.org:8545"
+        address: "0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f"
+        secret: "fc5720af7f9edb6323b5d738eed11e9519ff88f55d168f2ca817a3ad11a87378"
+        # LPL 主播合约，LPL投注合约
+        contract: [ "0x56789a8d8f2735f94989a09d1ade68ad79a674de","0x2033d36CB8b154a8551a53E04817F0Bbc190bc73" ]
+        owner-id: 2
+#以太币测试网
+eth:
+  casting:
+    token:
+      config:
+        node-url: "https://rinkeby.infura.io/v3/09a66faa902543c2ad9aa695b0a3a30e"
+        address: "0xc591be7A2f0999E0de9Edab0e07bddD4E1ee954f"
+        secret: "fc5720af7f9edb6323b5d738eed11e9519ff88f55d168f2ca817a3ad11a87378"
+        # 空投合约，面具合约
+        contract: ["0xe6d1a46195934073cae23f680A96699EDB04D345","0x68BDC2fE82a1569163a382BFB8cdCD31eceC6fD2"]
+        owner-id: 1
+        api-url: "https://api-rinkeby.etherscan.io/api"
+#火币测试网
+heco:
+  casting:
+    token:
+      config:
+        node-url: "https://http-testnet.hecochain.com"
+        address: "0x87d0086b833eD0B0F52db3CD296aD89B77ef7c3B"
+        secret: "c4a44d9f551cb94b8f03c5a1af517b61f62de31d9eb37553aa94a9f5a0e3ce3c"
+        contract: ["0xb5999cef458d0d8043fa0338f1d7aa3488750ea6"]
+        owner-id: 1
+
+
+# 打印sql语句
+
+  logging:
+    level:
+      com.aaa.mapper: DEBUG
