@@ -13,4 +13,42 @@
         </if>
         where id=#{tokenId}
     </update>
+
+    <!--接收时更改地址-->
+    <update id="updateRecordById">
+        update twitter_nft_record set
+        address = #{address},update_time=now()
+        where id = #{tokenId}
+    </update>
+
+    <select id="selectRecordById" resultType="com.lyl.play.vo.res.RecordResMes">
+        select id tokenId,address,order_no orderNo from twitter_nft_record
+        where status in (0,1) and  order_no in (select order_no from twitter_nft_record where id = #{tokenId})
+    </select>
+
+    <update id="updateByOrderNo">
+        update twitter_nft_record set
+        status = #{status},update_time=now()
+        <if test="status==3">
+            ,mint_time=now()
+        </if>
+        where order_no = #{orderNo}
+    </update>
+
+    <!---->
+    <select id="selectNoPage" resultType="com.lyl.play.entity.TwitterNftRecord">
+        select * from twitter_nft_record
+        <where>
+            <if test="orderNo!=null and orderNo!=''">
+                and order_no=#{orderNo}
+            </if>
+            <if test="mintUser!=null and mintUser!=''">
+                and mint_user concat {'%',#{mintUser},'%'}
+            </if>
+            <if test="mint_time!=null">
+                and mint_time = now();
+            </if>
+        </where>
+    </select>
+
 </mapper>
