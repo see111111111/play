@@ -15,7 +15,6 @@ import com.lyl.play.vo.req.TwitterNftReq;
 import com.lyl.play.vo.req.UpReq;
 import com.lyl.play.vo.res.FileIpfsDto;
 import com.lyl.play.vo.res.RecordResMes;
-import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,8 +52,8 @@ public class TwitterNftController {
     @GetMapping("list")
     @ResponseBody
     public ResponseData<PageResult> list(TwitterNftReq req){
-        if (StringUtils.isBlank(req.getMintUser()) )
-        return ResponseData.error("参数缺失");
+        if (StringUtils.isBlank(req.getMintUser()))
+            return ResponseData.error("缺失参数");
         return ResponseData.success(twitterNftService.list(req));
     }
 

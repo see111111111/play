@@ -10,10 +10,9 @@ import java.util.List;
 
 public interface TwitterNftMapper extends BaseMapper<TwitterNftRecord> {
 
-    TwitterNftRecord selectByOrderNo(String orderNo);
+
 
     int upStatus(@Param("tokenId") Long tokenId,@Param("status") int status);
-
 
     int updateRecordById(@Param("tokenId") Long tokenId,@Param("address") String address);
 
@@ -22,4 +21,6 @@ public interface TwitterNftMapper extends BaseMapper<TwitterNftRecord> {
     int updateByOrderNo(@Param("orderNo") String orderNo,@Param("status") int i);
 
     List<TwitterNftRecord> selectNoPage(TwitterNftRecord t);
+
+    TwitterNftRecord selectRecordByOrder(String orderNo);
 }

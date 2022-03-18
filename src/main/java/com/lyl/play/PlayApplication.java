@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-@MapperScan("com.lyl.play.mapper")
+@MapperScan("com.lyl.*.mapper")
 public class PlayApplication {
 
     public static void main(String[] args) {

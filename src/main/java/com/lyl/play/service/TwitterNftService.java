@@ -3,6 +3,7 @@ package com.lyl.play.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lyl.play.entity.TwitterNftRecord;
 import com.lyl.play.vo.PageResult;
+import com.lyl.play.vo.ResponseData;
 import com.lyl.play.vo.req.AddressReq;
 import com.lyl.play.vo.req.NewNftReq;
 import com.lyl.play.vo.req.TwitterNftReq;
@@ -24,4 +25,7 @@ public interface TwitterNftService  {
     List<RecordResMes> mint(Long tokenId, int i);
 
     void createNft(NewNftReq req);
+
+
+    ResponseData<PageResult> attaList(TwitterNftReq req);
 }

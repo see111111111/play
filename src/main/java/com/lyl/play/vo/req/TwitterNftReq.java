@@ -15,6 +15,7 @@ public class TwitterNftReq extends PageQuery {
     @ApiModelProperty("铸造类型")
     private int type;
 
+    private String receiveUser;
 
 
 

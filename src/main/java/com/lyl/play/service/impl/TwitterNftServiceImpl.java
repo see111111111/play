@@ -12,6 +12,7 @@ import com.lyl.play.mapper.TwitterNftMapper;
 import com.lyl.play.service.TwitterNftService;
 import com.lyl.play.utils.PageUtils;
 import com.lyl.play.vo.PageResult;
+import com.lyl.play.vo.ResponseData;
 import com.lyl.play.vo.req.AddressReq;
 import com.lyl.play.vo.req.NewNftReq;
 import com.lyl.play.vo.req.TwitterNftReq;
@@ -41,28 +42,7 @@ public class TwitterNftServiceImpl extends ServiceImpl<TwitterNftMapper, Twitter
     @Autowired
     private IpfsUploadService ipfsUploadService;
 
-    @Override
-    public PageResult list(TwitterNftReq req) {
 
-        QueryWrapper<TwitterNftRecord> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("mint_user", req.getMintUser());
-        queryWrapper.eq("type", req.getType());
-        Page<TwitterNftRecord> userPage = new Page(req.getCurrent(), req.getPageSize());
-        userPage = baseMapper.selectPage(userPage, queryWrapper);
-        PageResult pageResult = PageUtils.convertToResult(userPage);
-        List list=new ArrayList();
-        for (int i = 0; i <pageResult.getRecords().size() ; i++) {
-            TwitterNftRecord twitterNftRecord = (TwitterNftRecord) pageResult.getRecords().get(i);
-            if (twitterNftRecord.getCreatorTag()==1){
-                TwitterNftRecord t = baseMapper.selectByOrderNo(twitterNftRecord.getOrderNo());
-                twitterNftRecord.setOhterAddress(t.getAddress());
-                twitterNftRecord.setOhterUser(t.getMintUser());
-            }
-            list.add(twitterNftRecord);
-        }
-        pageResult.setRecords(list);
-        return pageResult;
-    }
 
     @Override
     public void bind(AddressReq req) {
@@ -154,6 +134,53 @@ public class TwitterNftServiceImpl extends ServiceImpl<TwitterNftMapper, Twitter
 
     }
 
+    @Override
+    public ResponseData<PageResult> attaList(TwitterNftReq req) {
+        QueryWrapper<TwitterNftRecord> where=new QueryWrapper<>();
+        if (req.getMintUser().equals(req.getReceiveUser())){
+            where.eq("mint_user",req.getMintUser());
+        }else {
+            where.eq("mint_user",req.getReceiveUser());
+        }
+        where.eq("type",req.getType());
+        if (req.getType()!=2){
+            where.eq("status",3);
+        }
+        Page page = baseMapper.selectPage(PageUtils.convertToPage(req), where);
+        PageResult pageResult = PageUtils.convertToResult(page);
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+    @Override
+    public PageResult list(TwitterNftReq req) {
+        QueryWrapper where=new QueryWrapper();
+        where.eq("mint_user",req.getMintUser());
+        where.eq("type",req.getType());
+
+        Page page=new Page(req.getCurrent(),req.getPageSize());
+        Page page1 = baseMapper.selectPage(page, where);
+        PageResult pageResult = PageUtils.convertToResult(page1);
+        List list=new ArrayList();
+        for (int i = 0; i <pageResult.getRecords().size() ; i++) {
+            TwitterNftRecord t = (TwitterNftRecord) pageResult.getRecords().get(i);
+            if (t.getCreatorTag()==1){
+                TwitterNftRecord twitterNftRecord=baseMapper.selectRecordByOrder(t.getOrderNo());
+                t.setOhterUser(twitterNftRecord.getMintUser());
+                t.setOhterAddress(twitterNftRecord.getAddress());
+            }
+            list.add(t);
+        }
+        pageResult.setRecords(list);
+        return pageResult;
+    }
 
 
 }
